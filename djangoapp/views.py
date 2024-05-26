@@ -22,7 +22,7 @@ from bson.objectid import ObjectId
 client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['users']
 collection = db['users']
-api_key = '1SD1RGAZUYZP9PGR'
+api_key = 'NVCLY86372DZJZTN'
 
 
 class MongoJWTAuthentication(JWTAuthentication):
