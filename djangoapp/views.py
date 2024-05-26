@@ -19,6 +19,7 @@ db = client['users']
 collection = db['users']
 api_key = 'NVCLY86372DZJZTN'
 
+user_tokens={}
 # Dictionary to store invalidated tokens
 invalid_tokens = set()
 
