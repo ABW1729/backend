@@ -129,26 +129,28 @@ def login_view(request):
         email = data.get('email')
         password = data.get('password')
         user = collection.find_one({'email': email})
+        
         # Perform authentication
         if user and check_password(password, user['password']):
-            # Check if user already has a token
-            if email in user_tokens:
-                return HttpResponseRedirect('/')
-            else:
-                # Generate a unique token for the user
-                token = str(uuid.uuid4())
-                # Concatenate username with token using a delimiter
-                token_with_username = f"{token}${email}"
+            # Generate a unique token for the user
+            token = str(uuid.uuid4())
+            # Concatenate username with token using a delimiter
+            token_with_username = f"{token}${email}"
 
-                # Calculate token expiry timestamp (example: token expires in 24 hours)
-                expiry_timestamp = datetime.now() + timedelta(hours=24)
+            # Calculate token expiry timestamp (example: token expires in 24 hours)
+            expiry_timestamp = datetime.now() + timedelta(hours=24)
 
-                # Store the token and its expiry timestamp
-                user_tokens[email] = {'token': token, 'expiry_timestamp': expiry_timestamp}
-                print(user_tokens)
-                response = JsonResponse({'message': 'Login Success','token':token_with_username,'expiry_timestamp':expiry_timestamp} ,status=200)
-                
-                return response
+            # Store the token and its expiry timestamp
+            user_tokens[email] = {'token': token, 'expiry_timestamp': expiry_timestamp.isoformat()}
+            print(user_tokens)
+
+            response = JsonResponse({
+                'message': 'Login Success',
+                'token': token_with_username,
+                'expiry_timestamp': expiry_timestamp.isoformat()
+            }, status=200)
+            
+            return response
         else:
             return JsonResponse({'message': 'Invalid credentials'}, status=401)
     else:
