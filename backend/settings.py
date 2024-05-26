@@ -81,7 +81,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
-    'http://34.227.101.23:3000'
+    'http://34.227.101.23:3000',
+    'https://frontend-seven-xi-32.vercel.app'
 ]
 
 
