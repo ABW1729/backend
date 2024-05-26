@@ -2,3 +2,4 @@ Django
 pymongo
 django-cors-headers
 mongoengine
+rest-framework-simplejwt
