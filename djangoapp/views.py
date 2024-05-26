@@ -58,24 +58,7 @@ class TokenCheckView(APIView):
             return Response({'message': str(e)}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-class TokenCckView(APIView):
-    def post(self, request):
-        token = request.data.get('token')
-        if not token:
-            return Response({'message': 'Token not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            decoded_token = jwt.decode(token, 'your_secret_key', algorithms=['HS256'])
-            email = decoded_token.get('email')
-            user = collection.find_one({'email': email})
-            if user:
-                return Response({'message': 'Token is valid'}, status=status.HTTP_200_OK)
-            else:
-                return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
-        except jwt.ExpiredSignatureError:
-            return Response({'message': 'Token has expired'}, status=status.HTTP_401_UNAUTHORIZED)
-        except jwt.InvalidTokenError:
-            return Response({'message': 'Invalid token'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class SignupView(APIView):
@@ -86,40 +69,12 @@ class SignupView(APIView):
             return Response({'message': 'User signed up successfully'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class LonView(APIView):
-    def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = collection.find_one({'email': email})
-        if user and check_password(password, user['password']):
-            refresh = RefreshToken.for_user(email)
-            access_token_expiry = datetime.utcfromtimestamp(access_token['exp'])
-            return Response({
-                'message': 'Login success',
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'access_expiry': access_token_expiry.isoformat()
-            })
-        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 
 
-class ginView(APIView):
-    def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = collection.find_one({'email': email})
-        if user and check_password(password, user['password']):
-            user_id = user['_id']  # Assuming '_id' is the user identifier field
-            refresh = RefreshToken.for_user(user_id)
-            return Response({
-                'message': 'Login success',
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-                'access_expires_in': refresh.access_token.lifetime.total_seconds()  # Send access token expiry
-            })
-        return Response({'message': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 class RefreshTokenView(APIView):
     def post(self, request):
         refresh_token = request.data.get('refresh')
@@ -253,27 +208,6 @@ class DeleteStockView(APIView):
         }, status=status.HTTP_200_OK)
 
 
-class LogoView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        refresh_token = request.data.get('refresh')
-        token = RefreshToken(refresh_token)
-        token.blacklist()
-        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)
-
-class LoutView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request):
-        try:
-            refresh_token = request.data['refresh']
-            token = RefreshToken(refresh_token)
-            # Blacklist the token
-            BlacklistedToken.objects.create(jti=token['jti'])
-            return Response(status=204)
-        except Exception as e:
-            return Response(status=400, data=str(e))
 
 
 
@@ -292,18 +226,7 @@ def blacklist_token(jti):
     blacklisted_tokens.insert_one({'jti': jti})
     print(1)
 
-class LoutView(APIView):
-    
-    def post(self, request):
-        try:
-            refresh_token = request.data['refresh']
-            token = RefreshToken(refresh_token)
-            print(token)
-            jti = token['jti']
-            blacklist_token(jti)
-            return Response(status=204)
-        except Exception as e:
-            return Response(status=400, data=str(e))
+
 
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,)
