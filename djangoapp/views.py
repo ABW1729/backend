@@ -17,7 +17,7 @@ import pymongo
 client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['users']
 collection = db['users']
-api_key = 'NVCLY86372DZJZTN'
+api_key = 'X2ZVR0MTKC9PWVWS'
 
 user_tokens={}
 # Dictionary to store invalidated tokens
