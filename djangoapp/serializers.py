@@ -4,7 +4,7 @@ from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 from pymongo import MongoClient
 
-client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient(config('MONGODB_URI'))
 db = client['users']
 collection = db['users']
 
