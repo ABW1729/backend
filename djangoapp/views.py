@@ -13,11 +13,11 @@ def index(request):
         return HttpResponse("<h1>Hello</h1>")
 import pymongo
 
-##Add MONGODB URI here
-client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+uri=config(MONGODB_URI)
+client = MongoClient(uri)
 db = client['users']
 collection = db['users']
-api_key = 'X2ZVR0MTKC9PWVWS'
+api_key = config(API_KEY)
 
 user_tokens={}
 # Dictionary to store invalidated tokens
