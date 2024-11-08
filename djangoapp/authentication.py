@@ -16,7 +16,7 @@ class MongoJWTAuthentication(JWTAuthentication):
             jti = validated_token['jti']
 
      
-            client = MongoClient('mongodb+srv://aniketwani1729:6Pj1S6l5OBoF4oGG@cluster0.4bwrce0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+            client = MongoClient(config('MONGODB_URI'))
             db = client['users']
             collection = db['users']
             blacklist_collection = db['blacklisted_tokens']
